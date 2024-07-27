@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Chatbot</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Travel Chatbot</h1>
+        <form id="travel-form" class="border p-4 rounded">
+            <div class="form-group">
+                <label for="days">Number of days:</label>
+                <input type="text" class="form-control" id="days" name="days" required>
+            </div>
+            <div class="form-group">
+                <label for="budget">Budget:</label>
+                <input type="text" class="form-control" id="budget" name="budget" required>
+            </div>
+            <div class="form-group">
+                <label for="preferences">Preferences:</label>
+                <input type="text" class="form-control" id="preferences" name="preferences" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Itinerary</button>
+        </form>
+        <h2 class="my-4">Your Itinerary:</h2>
+        <pre id="result" class="border p-4 rounded"></pre>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('travel-form').onsubmit = function(event) {
+            event.preventDefault();
+            let days = document.getElementById('days').value;
+            let budget = document.getElementById('budget').value;
+            let preferences = document.getElementById('preferences').value;
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ days, budget, preferences })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+            });
+        };
+    </script>
+</body>
+</html>
